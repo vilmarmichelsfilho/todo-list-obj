@@ -9,8 +9,8 @@ defineEmits(['marcar', 'remover', 'editar'])
         <span @click="$emit('marcar', id)" :class="{ concluida: status === 'concluida' }">
             {{ desc}}
         </span>
-        <a @click="$emit('editar', id)" class="edit">✏️</a>
-        <a @click="$emit('remover', id)" class="deleti">🗑️</a>
+        <a @click="$emit('editar', id)" class="edit">Editar</a>
+        <a @click="$emit('remover', id)" class="deleti">Deletar</a>
     </li>
 </template>
 
@@ -27,6 +27,7 @@ li a {
   border-radius: 2px;
   box-shadow: 1px 1px 1px 1px rgb(146, 146, 146);
   transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+  color: black;
 }
 
 .deleti:hover {
