@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import taskChild from './components/taskChild.vue';
 
 const novaDesc = ref('');
 let posicao = ref(-1);
@@ -79,26 +80,26 @@ function editar(id) {
           style="font-weight: bold;">Editar</span></button>
     </div>
     <ul>
-      <li v-for="item in tarefasFiltradas" :key="item.id">
-        <span v-on:click="marcarConcluida(item.id)" :class="{ concluida: item.status === 'concluida' }">{{ item.desc
-        }}</span>
-        <a v-on:click="editar(item.id)" class="edit">✏️</a>
-        <a v-on:click="deletar(item.id)" class="deleti">🗑️</a>
-      </li>
+      <taskChild v-for="item in tarefas"
+      :key="item.id"
+      :desc="item.desc"
+      :status="item.status"
+      :id="item.id"
+      @remover="deletar"
+      @editar="editar"
+      @marcar="marcarConcluida"
+      ></taskChild>
     </ul>
     <input type="text" placeholder="Filtrar tarefa" v-model="filtro">
     <button v-on:click="tarefas.sort((a, b) => a.desc.localeCompare(b.desc, 'pt-BR'))">Ordenar</button>
     <div class="contagem">
-      <p>✅: {{ pendentes }}</p>
-      <p>❌: {{ concluidas }}</p>
+      <p>✅: {{ concluidas }}</p>
+      <p>🚫: {{ pendentes }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
-.container ul li {
-  cursor: pointer;
-}
 
 .contagem {
   display: flex;
@@ -107,9 +108,9 @@ function editar(id) {
 }
 
 .container {
-  background-color: white;
+  background-color: rgb(29, 29, 29);
   padding: 2rem;
-  box-shadow: 1px 1px 3px 3px rgb(146, 146, 146);
+  box-shadow: 1px 1px 3px 3px rgb(15, 15, 15);
   border-radius: 15px;
 }
 
@@ -121,10 +122,6 @@ function editar(id) {
 .container ul {
   list-style: none;
   padding: 0;
-}
-
-.container ul li {
-  margin: 5px 0;
 }
 
 .container input {
@@ -144,25 +141,6 @@ function editar(id) {
   border-radius: 5px;
   box-shadow: 1px 1px 1px 1px rgb(146, 146, 146);
   font-weight: bold;
-}
-
-.container ul li a {
-  background-color: rgb(219, 219, 219);
-  padding: 2px;
-  margin: 2px;
-  border-radius: 2px;
-  box-shadow: 1px 1px 1px 1px rgb(146, 146, 146);
-  transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
-}
-
-.deleti:hover {
-  background-color: rgb(155, 0, 0);
-  box-shadow: 1px 1px 1px 1px rgb(100, 0, 0);
-}
-
-.edit:hover {
-  background-color: rgb(15, 185, 0);
-  box-shadow: 1px 1px 1px 1px rgb(10, 124, 0);
 }
 
 .concluida {
